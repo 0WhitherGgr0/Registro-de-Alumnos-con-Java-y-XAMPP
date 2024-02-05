@@ -1,5 +1,6 @@
 
 package ventanas;
+
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -47,8 +48,18 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         });
 
         jButton2.setText("Modificar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Ingresa el código del alumno: ");
 
@@ -60,6 +71,7 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         });
 
         label_status.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_status.setText("dasdasdasdasdasdasdsdasdasdas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,11 +81,10 @@ public class RegistroAlumnos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1)
-                            .addComponent(txt_nombre)
-                            .addComponent(jLabel2)
-                            .addComponent(txt_grupo, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addComponent(txt_nombre)
+                        .addComponent(jLabel2)
+                        .addComponent(txt_grupo)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButton1)
                             .addGap(18, 18, 18)
@@ -85,7 +96,7 @@ public class RegistroAlumnos extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txt_buscar)))
                     .addComponent(jButton4)
-                    .addComponent(label_status))
+                    .addComponent(label_status, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(133, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -110,7 +121,7 @@ public class RegistroAlumnos extends javax.swing.JFrame {
                     .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(label_status)
                 .addContainerGap())
         );
@@ -136,6 +147,7 @@ public class RegistroAlumnos extends javax.swing.JFrame {
             
         }
         
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -157,8 +169,47 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         }catch (Exception e){
             
         }
-        
+         
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        try {
+            String ID = txt_buscar.getText().trim();
+            
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_ins", "root", "");
+            PreparedStatement pst = cn.prepareStatement("update alumnos set NombreAlumno = ?, Grupo = ? where ID = " + ID);
+            
+            pst.setString(1, txt_nombre.getText().trim());
+            pst.setString(2, txt_grupo.getText().trim());
+            pst.executeUpdate();
+            
+            label_status.setText("Modificación exitosa.");
+            
+        } catch (Exception e) {
+        }
+ 
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
+        try {
+             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/bd_ins", "root", "");
+            PreparedStatement pst = cn.prepareStatement("delete from alumnos where ID = ?");
+            
+            pst.setString(1, txt_buscar.getText().trim());
+            pst.executeUpdate();
+            
+            txt_nombre.setText("");
+            txt_grupo.setText("");
+            txt_buscar.setText("");
+            
+            label_status.setText("Registro eliminado.");
+            
+        } catch (Exception e) {
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
